@@ -1,0 +1,77 @@
+openapi: 3.0.1
+info:
+  title: Client App
+  description: API to make pizza orders in the Palmmetto App
+  version: 1.0.0
+servers:
+  - url: http://localhost
+
+paths:
+  /order:
+    post:
+      summary: Creates a new pizza order in the system
+      operationId: createOrder
+      requestBody:
+        description: Information about the order
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+  /order/{orderId}:
+    get:
+      summary: Retrieves an existing order
+      operationId: getOrder
+      parameters:
+        - in: path
+          name: orderId
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+components:
+  schemas:
+    Order:
+      type: object
+      required:
+        - id
+        - name
+        - client-name
+        - price
+        - created-date
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          example: 'Pizza Diavola'
+        client-name:
+          type: string
+          example: 'John Doe'
+        price:
+          type: string
+          example: '12.45'
+        created-date:
+          type: string
+          example: '2022-05-05'
+          readOnly: true
+        status:
+          type: string
+          example: 'READY'

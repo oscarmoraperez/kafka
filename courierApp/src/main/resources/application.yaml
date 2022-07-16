@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    defer-datasource-initialization: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+    bootstrap-servers: localhost:9092
+
+kafka:
+  bootstrapAddress: localhost:9092
+
+server:
+  port: 8081
