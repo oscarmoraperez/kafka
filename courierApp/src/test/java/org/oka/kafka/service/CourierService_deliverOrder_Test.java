@@ -10,7 +10,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.util.concurrent.ListenableFuture;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,9 +29,9 @@ public class CourierService_deliverOrder_Test {
         when(kafkaTemplate.send(any(), any())).thenReturn(listenableFuture);
 
         // When
-        courierService.deliverOrder(Notification.builder().build());
+        courierService.deliverOrder(Notification.builder().status("READY").build());
 
         // Then
-        verify(kafkaTemplate).send(anyString(), eq(Notification.class));
+        verify(kafkaTemplate).send("notification", Notification.builder().id(0).status("DELIVERED").build());
     }
 }

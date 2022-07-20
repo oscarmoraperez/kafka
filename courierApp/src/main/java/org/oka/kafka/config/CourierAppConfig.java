@@ -16,11 +16,11 @@ import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.Map;
 
-import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
-import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.*;
 import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG;
 
@@ -43,7 +43,7 @@ public class CourierAppConfig {
         Map<String, Object> configProps = Map.of(
                 BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress,
                 KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
-                VALUE_SERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+                VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
@@ -56,13 +56,14 @@ public class CourierAppConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
-        JsonDeserializer<String> deserializer = new JsonDeserializer<>();
+    public ConsumerFactory<String, Object> consumerFactory() {
+        JsonDeserializer<Object> deserializer = new JsonDeserializer<>();
         deserializer.addTrustedPackages("org.oka.kafka.model");
 
         Map<String, Object> configProps = Map.of(
                 BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress,
-                GROUP_ID_CONFIG, "courierApp");
+                GROUP_ID_CONFIG, "courierApp",
+                AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         return new DefaultKafkaConsumerFactory<>(configProps, new StringDeserializer(), deserializer);
     }

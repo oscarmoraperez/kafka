@@ -41,7 +41,7 @@ public class OrderController_createAndRetrieveOrder_IT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    ConsumerFactory<String, String> consumerFactory;
+    ConsumerFactory<String, Object> consumerFactory;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -53,7 +53,7 @@ public class OrderController_createAndRetrieveOrder_IT {
     @Test
     void shouldPersistOrder() throws Exception {
         // Given - There is a "testing purposes" Kafka consumer
-        Consumer<String, String> consumer = consumerFactory.createConsumer();
+        Consumer<String, Object> consumer = consumerFactory.createConsumer();
         consumer.subscribe(List.of("order"));
         // And
         OrderDto orderDto = new OrderDto().clientName("John Doe").name("Pizza").price("12.55");
@@ -72,7 +72,9 @@ public class OrderController_createAndRetrieveOrder_IT {
         assertThat(readValue.getName()).isEqualTo("Pizza");
         assertThat(readValue.getPrice()).isEqualTo("12.55");
         // And - The "testing purposes" consumer has received the message from Client App
-        ConsumerRecord<String, String> record = KafkaTestUtils.getSingleRecord(consumer, "order");
+        ConsumerRecord<String, Object> record = KafkaTestUtils.getSingleRecord(consumer, "order");
         assertThat(record).isNotNull();
+        Order order = (Order) record.value();
+        assertThat(order.getName()).isEqualTo("Pizza");
     }
 }

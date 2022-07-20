@@ -57,13 +57,14 @@ public class PalmettoAppConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
-        JsonDeserializer<String> deserializer = new JsonDeserializer<>();
+    public ConsumerFactory<String, Object> consumerFactory() {
+        JsonDeserializer<Object> deserializer = new JsonDeserializer<>();
         deserializer.addTrustedPackages("org.oka.kafka.model");
 
         Map<String, Object> configProps = Map.of(
                 BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress,
-                GROUP_ID_CONFIG, "palmettoApp");
+                GROUP_ID_CONFIG, "palmettoApp",
+                AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         return new DefaultKafkaConsumerFactory<>(configProps, new StringDeserializer(), deserializer);
     }

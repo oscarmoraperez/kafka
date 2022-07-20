@@ -56,8 +56,8 @@ public class ClientAppConfiguration {
     }
 
     @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
-        JsonDeserializer<String> deserializer = new JsonDeserializer<>();
+    public ConsumerFactory<String, Object> consumerFactory() {
+        JsonDeserializer<Object> deserializer = new JsonDeserializer<>();
         deserializer.addTrustedPackages("org.oka.kafka.model");
 
         Map<String, Object> configProps = Map.of(
