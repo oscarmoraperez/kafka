@@ -24,6 +24,9 @@ import static org.apache.kafka.clients.consumer.ConsumerConfig.*;
 import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG;
 
+/**
+ * Configuration of Kafka consumers and producers
+ */
 @EnableKafka
 @Configuration
 public class CourierAppConfig {
