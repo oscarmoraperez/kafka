@@ -1,6 +1,6 @@
-# Java Mentoring Program: Kafka 
+# Kafka 
 
-This maven-based project contains the exercises defined in the 'kafka' module of Java Mentoring program.
+This maven-based project contains a microservices ecosystem over a kafka infrastructure.
 
 0) To run the project one have the following options:
 
